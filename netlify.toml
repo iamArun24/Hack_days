@@ -1,0 +1,21 @@
+# Netlify: build from source (Git deploy). The Vite config's base targets GitHub Pages,
+# so BASE_PATH points it at the site root.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  BASE_PATH = "/"
+
+# Single-page app: every path serves index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Hashed assets never change, so cache them for a year.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
