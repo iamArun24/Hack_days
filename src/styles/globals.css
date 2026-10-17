@@ -1,0 +1,444 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import '@fontsource-variable/fraunces';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ─── Design tokens — "Lumen" ───────────────────────────────────────────────
+   A soft, calm palette: warm cream paper, plum-ink text and pastel accents
+   (sage, lavender, peach, sky, blush, butter). Dark mode is "dusk" — a muted
+   twilight periwinkle, never pure black. Components only use semantic roles. */
+
+:root {
+  --background: oklch(0.982 0.008 85);
+  --foreground: oklch(0.34 0.035 282);
+  --panel: oklch(0.993 0.005 85);
+  --popover: oklch(0.996 0.004 85);
+  --muted: oklch(0.955 0.012 80);
+  --muted-foreground: oklch(0.5 0.03 282);
+  --subtle-foreground: oklch(0.63 0.025 282);
+  --border: oklch(0.915 0.014 80);
+  --border-strong: oklch(0.86 0.02 80);
+  --input: oklch(0.89 0.016 80);
+  --ring: oklch(0.62 0.11 280);
+  --primary: oklch(0.6 0.11 280);
+  --primary-foreground: oklch(0.99 0.005 85);
+  --selection: oklch(0.6 0.11 280 / 0.09);
+  --selection-strong: oklch(0.6 0.11 280 / 0.17);
+
+  --sage: oklch(0.8 0.065 150);
+  --lavender: oklch(0.8 0.075 290);
+  --peach: oklch(0.85 0.075 50);
+  --sky: oklch(0.83 0.065 230);
+  --blush: oklch(0.84 0.065 5);
+  --butter: oklch(0.91 0.08 95);
+
+  --success: oklch(0.58 0.1 155);
+  --warning: oklch(0.63 0.12 68);
+  --danger: oklch(0.6 0.15 18);
+  --info: oklch(0.58 0.1 245);
+  --highlight: oklch(0.9 0.12 95);
+
+  --phase-blocked: #c9c5d3;
+  --phase-dns: #6fbf9f;
+  --phase-connect: #ee9e78;
+  --phase-ssl: #9b8de0;
+  --phase-send: #8cc07a;
+  --phase-wait: #78aee3;
+  --phase-receive: #e5bd5c;
+
+  --chart-neutral: oklch(0.84 0.02 282);
+  --chart-series: #78aee3;
+  --chart-warning: #e5bd5c;
+  --chart-critical: #e08a8a;
+  --chart-grid: oklch(0.93 0.012 80);
+
+  --method-get: oklch(0.56 0.11 245);
+  --method-post: oklch(0.55 0.1 155);
+  --method-put: oklch(0.6 0.11 65);
+  --method-delete: oklch(0.58 0.14 18);
+  --method-other: oklch(0.55 0.09 300);
+
+  --syntax-key: oklch(0.52 0.12 270);
+  --syntax-string: oklch(0.52 0.1 150);
+  --syntax-number: oklch(0.58 0.12 50);
+  --syntax-literal: oklch(0.54 0.13 330);
+  --syntax-tag: oklch(0.55 0.13 15);
+  --syntax-attr: oklch(0.56 0.11 75);
+  --syntax-comment: oklch(0.65 0.02 282);
+
+  --aurora-1: oklch(0.86 0.07 290 / 0.55);
+  --aurora-2: oklch(0.88 0.07 50 / 0.5);
+  --aurora-3: oklch(0.87 0.06 160 / 0.5);
+  --glass: oklch(0.995 0.005 85 / 0.62);
+  --shadow-color: 270 25% 35%;
+}
+
+[data-theme='dark'] {
+  --background: oklch(0.27 0.03 278);
+  --foreground: oklch(0.95 0.012 85);
+  --panel: oklch(0.3 0.032 278);
+  --popover: oklch(0.33 0.034 278);
+  --muted: oklch(0.345 0.034 278);
+  --muted-foreground: oklch(0.8 0.02 280);
+  --subtle-foreground: oklch(0.66 0.025 280);
+  --border: oklch(0.97 0.02 280 / 0.1);
+  --border-strong: oklch(0.97 0.02 280 / 0.17);
+  --input: oklch(0.97 0.02 280 / 0.14);
+  --ring: oklch(0.78 0.1 285);
+  --primary: oklch(0.78 0.1 285);
+  --primary-foreground: oklch(0.26 0.04 280);
+  --selection: oklch(0.78 0.1 285 / 0.14);
+  --selection-strong: oklch(0.78 0.1 285 / 0.24);
+
+  --sage: oklch(0.72 0.07 150);
+  --lavender: oklch(0.74 0.08 290);
+  --peach: oklch(0.78 0.08 50);
+  --sky: oklch(0.76 0.07 230);
+  --blush: oklch(0.76 0.07 5);
+  --butter: oklch(0.85 0.08 95);
+
+  --success: oklch(0.8 0.1 155);
+  --warning: oklch(0.85 0.1 80);
+  --danger: oklch(0.77 0.12 18);
+  --info: oklch(0.8 0.08 240);
+  --highlight: oklch(0.82 0.11 90);
+
+  --phase-blocked: #8e8aa6;
+  --phase-dns: #7fd0b0;
+  --phase-connect: #f2ad8b;
+  --phase-ssl: #b3a7f0;
+  --phase-send: #9fd28d;
+  --phase-wait: #8fc0f0;
+  --phase-receive: #f0cd75;
+
+  --chart-neutral: oklch(0.5 0.03 280);
+  --chart-series: #8fc0f0;
+  --chart-warning: #f0cd75;
+  --chart-critical: #f09a9a;
+  --chart-grid: oklch(0.97 0.02 280 / 0.08);
+
+  --method-get: oklch(0.82 0.08 240);
+  --method-post: oklch(0.83 0.1 155);
+  --method-put: oklch(0.86 0.1 80);
+  --method-delete: oklch(0.8 0.11 18);
+  --method-other: oklch(0.82 0.08 300);
+
+  --syntax-key: oklch(0.83 0.08 270);
+  --syntax-string: oklch(0.84 0.1 150);
+  --syntax-number: oklch(0.85 0.1 60);
+  --syntax-literal: oklch(0.82 0.1 330);
+  --syntax-tag: oklch(0.8 0.1 20);
+  --syntax-attr: oklch(0.86 0.09 80);
+  --syntax-comment: oklch(0.66 0.025 280);
+
+  --aurora-1: oklch(0.5 0.1 290 / 0.45);
+  --aurora-2: oklch(0.5 0.08 40 / 0.35);
+  --aurora-3: oklch(0.5 0.07 170 / 0.35);
+  --glass: oklch(0.31 0.033 278 / 0.6);
+  --shadow-color: 260 40% 8%;
+}
+
+@theme inline {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', 'Cascadia Code', Menlo, monospace;
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-panel: var(--panel);
+  --color-popover: var(--popover);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-selection: var(--selection);
+  --color-selection-strong: var(--selection-strong);
+
+  --color-sage: var(--sage);
+  --color-lavender: var(--lavender);
+  --color-peach: var(--peach);
+  --color-sky: var(--sky);
+  --color-blush: var(--blush);
+  --color-butter: var(--butter);
+  --color-glass: var(--glass);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-highlight: var(--highlight);
+
+  --color-phase-blocked: var(--phase-blocked);
+  --color-phase-dns: var(--phase-dns);
+  --color-phase-connect: var(--phase-connect);
+  --color-phase-ssl: var(--phase-ssl);
+  --color-phase-send: var(--phase-send);
+  --color-phase-wait: var(--phase-wait);
+  --color-phase-receive: var(--phase-receive);
+
+  --color-chart-neutral: var(--chart-neutral);
+  --color-chart-series: var(--chart-series);
+  --color-chart-warning: var(--chart-warning);
+  --color-chart-critical: var(--chart-critical);
+  --color-chart-grid: var(--chart-grid);
+
+  --color-method-get: var(--method-get);
+  --color-method-post: var(--method-post);
+  --color-method-put: var(--method-put);
+  --color-method-delete: var(--method-delete);
+  --color-method-other: var(--method-other);
+
+  --color-syntax-key: var(--syntax-key);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-number: var(--syntax-number);
+  --color-syntax-literal: var(--syntax-literal);
+  --color-syntax-tag: var(--syntax-tag);
+  --color-syntax-attr: var(--syntax-attr);
+  --color-syntax-comment: var(--syntax-comment);
+
+  --shadow-overlay:
+    0 0 0 1px var(--border), 0 18px 40px -12px hsl(var(--shadow-color) / 0.22),
+    0 4px 10px -4px hsl(var(--shadow-color) / 0.12);
+  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.05), 0 8px 24px -12px hsl(var(--shadow-color) / 0.16);
+  --shadow-lift: 0 2px 4px hsl(var(--shadow-color) / 0.06), 0 22px 44px -18px hsl(var(--shadow-color) / 0.3);
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite alternate;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-orbit: orbit 2.8s linear infinite;
+  --animate-breathe: breathe 3.6s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -8px, 0);
+    }
+  }
+  @keyframes aurora {
+    0% {
+      transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1);
+    }
+    100% {
+      transform: translate3d(6%, 4%, 0) rotate(12deg) scale(1.12);
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale(0.985);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.85;
+    }
+    50% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv11', 'ss01';
+    overflow: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  ::selection {
+    background: var(--color-selection-strong);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 1px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: var(--font-mono);
+  }
+
+  /* Search matches rendered by <Highlight />. The active match is driven by find navigation. */
+  mark[data-hl] {
+    background: color-mix(in oklab, var(--color-highlight) 45%, transparent);
+    color: inherit;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-highlight) 55%, transparent);
+  }
+
+  mark[data-hl][data-active] {
+    background: var(--color-highlight);
+    color: oklch(0.3 0.04 90);
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lets the browser skip layout/paint for off-screen rows in long source views. */
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 20px;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Frosted surface for floating chrome. */
+@utility glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+
+/* Soft pastel gradient text. */
+@utility text-iridescent {
+  background: linear-gradient(
+    100deg,
+    var(--color-primary),
+    color-mix(in oklab, var(--color-peach) 80%, var(--color-foreground)),
+    color-mix(in oklab, var(--color-sage) 70%, var(--color-foreground)),
+    var(--color-primary)
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+  animation-duration: 8s;
+}
+
+/* Cards follow the pointer with a soft light (vars set by the global spotlight listener). */
+@utility spotlight {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: var(--spot-o, 0);
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in oklab, var(--color-lavender) 26%, transparent),
+      transparent 60%
+    );
+  }
+}
+
+@utility card-lift {
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-border-strong);
+  }
+}
+
+/* Pastel hairline used under the header and around hero surfaces. */
+@utility aurora-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-lavender),
+    var(--color-peach),
+    var(--color-sage),
+    var(--color-sky),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  animation-duration: 9s;
+}
+
+/* Landing page: native cursor hidden where the custom cursor takes over (fine pointers only). */
+@media (pointer: fine) {
+  [data-custom-cursor] {
+    cursor: none;
+  }
+  [data-custom-cursor] * {
+    cursor: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
