@@ -22,6 +22,7 @@ const VIEW_COMPONENTS: Record<ViewId, ComponentType> = {
   timeline: named(() => import('../timeline/timeline-view'), 'TimelineView'),
   galaxy: named(() => import('../galaxy/galaxy-view'), 'GalaxyView'),
   overview: named(() => import('../overview/overview-view'), 'OverviewView'),
+  doctor: named(() => import('../ai-doctor/doctor-view'), 'DoctorView'),
   endpoints: named(() => import('../endpoints/endpoints-view'), 'EndpointsView'),
   security: named(() => import('../security/security-view'), 'SecurityView'),
   issues: named(() => import('../issues/issues-view'), 'IssuesView'),

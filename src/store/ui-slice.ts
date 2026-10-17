@@ -9,6 +9,7 @@ export type ViewId =
   | 'timeline'
   | 'galaxy'
   | 'overview'
+  | 'doctor'
   | 'endpoints'
   | 'security'
   | 'issues'
@@ -32,6 +33,7 @@ export type DialogState =
   | { type: 'none' }
   | { type: 'palette' }
   | { type: 'shortcuts' }
+  | { type: 'ai-settings' }
   | { type: 'note'; entryId: number }
   | { type: 'diff'; ids: [number, number] }
   | { type: 'replay'; entryId: number }

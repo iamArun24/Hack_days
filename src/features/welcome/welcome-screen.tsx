@@ -1,4 +1,5 @@
 import {
+  Bot,
   ChartGantt,
   Download,
   FileUp,
@@ -18,10 +19,17 @@ import { cn } from '@/lib/cn'
 import { MOD } from '@/lib/platform'
 import { openSample } from '@/services/capture'
 import { openFromPicker } from '../command/commands'
+import { AiQuickSetup, AiStatusPill } from '../ai-settings/ai-quick-setup'
 import { ThemeMenu } from '../shell/theme-menu'
 import { CaptureGuide } from './capture-guide'
 
 const FEATURES = [
+  {
+    icon: Bot,
+    title: 'AI Autopilot',
+    text: 'Agents analyse every upload in parallel and hand you root causes and a fix plan.',
+    tint: 'bg-lavender/50',
+  },
   {
     icon: Search,
     title: 'Search everything',
@@ -83,7 +91,8 @@ export function WelcomeScreen() {
           <span className="font-display text-[15px] font-semibold tracking-tight">HAR Viewer</span>
           <span className="text-iridescent text-2xs font-semibold tracking-[0.18em] uppercase">Lumen</span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
+          <AiStatusPill />
           <ThemeMenu />
           <Button variant="ghost" size="icon-sm" asChild>
             <a href={REPO_URL} target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
@@ -102,7 +111,7 @@ export function WelcomeScreen() {
         </h1>
         <p className="mt-4 max-w-xl animate-rise text-center text-[15px] text-pretty text-muted-foreground [animation-delay:160ms]">
           Open a HAR file to search every request, read headers and bodies, spot slow or failing calls, grade
-          security and diff captures, all offline.
+          security and diff captures. Add Groq keys and AI agents analyse each upload for you.
         </p>
 
         <button
@@ -127,6 +136,8 @@ export function WelcomeScreen() {
           <KbdCombo keys={[MOD, 'O']} />
         </button>
 
+        <AiQuickSetup className="mt-5 max-w-2xl animate-rise [animation-delay:280ms]" />
+
         <div className="mt-5 flex animate-rise items-center gap-3 text-xs text-muted-foreground [animation-delay:320ms]">
           <span>No file handy?</span>
           <Button
@@ -139,7 +150,7 @@ export function WelcomeScreen() {
           </Button>
         </div>
 
-        <ul className="mt-16 grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-16 grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f, i) => (
             <li
               key={f.title}

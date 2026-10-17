@@ -7,6 +7,7 @@ import {
   Orbit,
   Route,
   ShieldCheck,
+  Sparkles,
   Rows3,
   TriangleAlert,
   type LucideIcon,
@@ -23,6 +24,13 @@ export interface ViewDefinition {
 }
 
 export const VIEWS: readonly ViewDefinition[] = [
+  {
+    id: 'doctor',
+    label: 'AI Analysis',
+    icon: Sparkles,
+    filtered: false,
+    description: 'Automated multi-agent analysis, explanations and AI tools',
+  },
   {
     id: 'requests',
     label: 'Requests',

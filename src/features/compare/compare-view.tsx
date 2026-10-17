@@ -6,6 +6,7 @@ import { pickFile } from '@/lib/file-picker'
 import { loadComparison } from '@/services/capture'
 import { useAppStore } from '@/store'
 import { CompareChanges } from './compare-changes'
+import { CompareExplain } from './compare-explain'
 import { CompareSummary } from './compare-summary'
 
 async function chooseComparison() {
@@ -59,6 +60,12 @@ export function CompareView() {
           </Button>
         </header>
         <CompareSummary a={a} b={b} nameA={fileName} nameB={comparison.fileName} />
+        <CompareExplain
+          key={comparison.fileName}
+          base={entries}
+          other={comparison.entries}
+          cacheKey={`${fileName}→${comparison.fileName}`}
+        />
         <CompareChanges diff={diff} />
       </div>
     </div>

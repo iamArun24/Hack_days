@@ -1,14 +1,48 @@
-import { Search } from 'lucide-react'
+import { Search, Sparkles } from 'lucide-react'
+import { aiReady, useAiSettings } from '@/ai'
 import { GithubIcon, LogoMark, REPO_URL } from '@/components/brand'
 import { Button } from '@/components/ui/button'
 import { KbdCombo } from '@/components/ui/kbd'
 import { Tooltip } from '@/components/ui/tooltip'
 import { MOD } from '@/lib/platform'
+import { cn } from '@/lib/cn'
 import { useAppStore } from '@/store'
 import { ExportMenu } from './export-menu'
 import { FileMenu } from './file-menu'
 import { ThemeMenu } from './theme-menu'
 import { ValidationPopover } from './validation-popover'
+
+/** Opens the AI agents dialog; the dot shows whether AI is ready to use. */
+function AiButton() {
+  const openDialog = useAppStore((s) => s.openDialog)
+  // Subscribing to keys + consent keeps the dot in sync with aiReady().
+  const keyCount = useAiSettings((s) => s.keys.length)
+  const consent = useAiSettings((s) => s.consent)
+  const ready = keyCount > 0 && consent && aiReady()
+  const label = ready ? 'AI agents ready' : keyCount ? 'AI needs your consent' : 'Set up AI agents'
+
+  return (
+    <Tooltip content={label}>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => openDialog({ type: 'ai-settings' })}
+        aria-label={label}
+        className="relative gap-1.5 rounded-full"
+      >
+        <Sparkles className={cn(ready && 'text-primary')} />
+        <span className="hidden sm:inline">AI</span>
+        <span
+          aria-hidden
+          className={cn(
+            'absolute top-1 right-1 size-1.5 rounded-full',
+            ready ? 'animate-breathe bg-success' : keyCount ? 'bg-warning' : 'bg-subtle-foreground/50',
+          )}
+        />
+      </Button>
+    </Tooltip>
+  )
+}
 
 export function AppHeader() {
   const openDialog = useAppStore((s) => s.openDialog)
@@ -48,6 +82,7 @@ export function AppHeader() {
         >
           <Search />
         </Button>
+        <AiButton />
         <ExportMenu />
         <ThemeMenu />
         <Tooltip content="Source on GitHub">

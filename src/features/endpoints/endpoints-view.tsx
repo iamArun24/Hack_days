@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn'
 import { formatBytes, formatDuration, formatNumber, formatPercent, pluralize } from '@/lib/format'
 import { useAppStore } from '@/store'
 import { selectEntryMap, useVisibleEntries } from '@/store/selectors'
+import { OpenApiAction } from './openapi-dialog'
 
 type SortKey = 'count' | 'errorRate' | 'p50' | 'p95' | 'max' | 'bytes'
 
@@ -171,6 +172,7 @@ export function EndpointsView() {
           <SegmentedItem value="api">API only</SegmentedItem>
           <SegmentedItem value="all">All requests</SegmentedItem>
         </SegmentedControl>
+        <OpenApiAction endpoints={rows} entries={entries} />
       </div>
 
       {rows.length === 0 ? (

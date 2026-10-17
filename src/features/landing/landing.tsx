@@ -1,4 +1,5 @@
 import {
+  Bot,
   ChartGantt,
   ChevronDown,
   Download,
@@ -28,6 +29,7 @@ import { cn } from '@/lib/cn'
 import { MOD } from '@/lib/platform'
 import { openSample } from '@/services/capture'
 import { openFromPicker } from '../command/commands'
+import { AiQuickSetup, AiStatusPill } from '../ai-settings/ai-quick-setup'
 import { ThemeMenu } from '../shell/theme-menu'
 import { CaptureGuide } from '../welcome/capture-guide'
 import { ACT_STARTS, ACTS, FILM_SECONDS, filmAt, type Act } from './acts'
@@ -249,51 +251,55 @@ function DropPortal() {
         Now see <em className="text-iridescent font-normal">your own.</em>
       </h2>
       <p className="mt-4 max-w-lg text-center text-[15px] text-pretty text-muted-foreground">
-        Drop a HAR file into the portal. It is parsed in a Web Worker on your machine and never uploaded.
+        Drop a HAR file into the portal. It is parsed in a Web Worker on your machine, and with AI Autopilot
+        on, agents analyse it the moment it lands.
       </p>
 
-      <button
-        ref={card}
-        type="button"
-        data-cursor="Open"
-        onClick={() => void openFromPicker()}
-        className="group relative mt-10 flex w-full max-w-xl flex-col items-center gap-5 overflow-hidden rounded-[2rem] border border-white/50 px-8 py-14 shadow-[var(--shadow-lift)] glass outline-none focus-visible:ring-4 focus-visible:ring-ring/25 dark:border-white/10"
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            background:
-              'radial-gradient(500px circle at var(--sheen-x, 50%) var(--sheen-y, 50%), color-mix(in oklab, var(--lavender) 40%, transparent), transparent 55%)',
-          }}
-        />
-        <span
-          aria-hidden
-          className="absolute inset-4 rounded-[1.5rem] border-2 border-dashed border-primary/25 transition-colors group-hover:border-primary/50"
-        />
-        <span
-          className="relative grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-lavender via-peach to-sage shadow-[var(--shadow-soft)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:rotate-6"
-          style={{ transform: 'translateZ(40px)' }}
+      <div className="mt-8 grid w-full max-w-5xl items-stretch gap-5 lg:grid-cols-[1.15fr_1fr]">
+        <button
+          ref={card}
+          type="button"
+          data-cursor="Open"
+          onClick={() => void openFromPicker()}
+          className="group relative flex w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-[2rem] border border-white/50 px-8 py-12 shadow-[var(--shadow-lift)] glass outline-none focus-visible:ring-4 focus-visible:ring-ring/25 dark:border-white/10"
+          style={{ transformStyle: 'preserve-3d' }}
         >
-          <FileUp className="size-7 text-white drop-shadow" />
-        </span>
-        <span
-          className="relative flex flex-col items-center gap-1.5"
-          style={{ transform: 'translateZ(24px)' }}
-        >
-          <span className="text-lg font-medium">
-            Drop a HAR file, or{' '}
-            <span className="text-primary underline decoration-primary/30 underline-offset-4">browse</span>
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={{
+              background:
+                'radial-gradient(500px circle at var(--sheen-x, 50%) var(--sheen-y, 50%), color-mix(in oklab, var(--lavender) 40%, transparent), transparent 55%)',
+            }}
+          />
+          <span
+            aria-hidden
+            className="absolute inset-4 rounded-[1.5rem] border-2 border-dashed border-primary/25 transition-colors group-hover:border-primary/50"
+          />
+          <span
+            className="relative grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-lavender via-peach to-sage shadow-[var(--shadow-soft)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:rotate-6"
+            style={{ transform: 'translateZ(40px)' }}
+          >
+            <FileUp className="size-7 text-white drop-shadow" />
           </span>
-          <span className="text-xs text-muted-foreground">
-            .har or .json of any size · drop several to merge them
+          <span
+            className="relative flex flex-col items-center gap-1.5"
+            style={{ transform: 'translateZ(24px)' }}
+          >
+            <span className="text-lg font-medium">
+              Drop a HAR file, or{' '}
+              <span className="text-primary underline decoration-primary/30 underline-offset-4">browse</span>
+            </span>
+            <span className="text-xs text-muted-foreground">
+              .har or .json of any size · drop several to merge them
+            </span>
           </span>
-        </span>
-        <span className="relative" style={{ transform: 'translateZ(16px)' }}>
-          <KbdCombo keys={[MOD, 'O']} />
-        </span>
-      </button>
+          <span className="relative" style={{ transform: 'translateZ(16px)' }}>
+            <KbdCombo keys={[MOD, 'O']} />
+          </span>
+        </button>
+        <AiQuickSetup className="self-center" />
+      </div>
 
       <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
         <button
@@ -324,11 +330,18 @@ const FEATURES: ReadonlyArray<{
   wide?: boolean
 }> = [
   {
+    icon: Bot,
+    title: 'AI Autopilot',
+    text: 'Drop a HAR and four specialist agents (performance, reliability, security, API) work in parallel on Groq. A lead agent merges their findings into root causes, a fix plan and pre-explained requests, and you land on the report.',
+    tint: 'from-lavender/60',
+    fresh: true,
+    wide: true,
+  },
+  {
     icon: Search,
     title: 'Search everything',
-    text: 'Facets for status, method, type and domain. Regex and inverted search over URLs, headers and bodies.',
+    text: 'Facets for status, method, type and domain. Regex and inverted search, or just ask in plain English.',
     tint: 'from-lavender/50',
-    wide: true,
   },
   {
     icon: Orbit,
@@ -359,17 +372,17 @@ const FEATURES: ReadonlyArray<{
     fresh: true,
   },
   {
+    icon: TriangleAlert,
+    title: 'Issues',
+    text: 'Failures, slow TTFB, redirect chains, oversized images, missing caching and duplicate requests.',
+    tint: 'from-peach/50',
+  },
+  {
     icon: ChartGantt,
     title: 'Waterfall & timeline',
     text: 'Every phase of every request, plus how many run at once on each domain.',
     tint: 'from-blush/50',
     wide: true,
-  },
-  {
-    icon: TriangleAlert,
-    title: 'Issues',
-    text: 'Failures, slow TTFB, redirect chains, oversized images, missing caching and duplicate requests.',
-    tint: 'from-peach/50',
   },
   {
     icon: GitCompareArrows,
@@ -651,6 +664,7 @@ export function Landing({ onFallback }: { onFallback: () => void }) {
               </button>
             )
           )}
+          <AiStatusPill />
           <ThemeMenu />
           <a
             href={REPO_URL}

@@ -46,6 +46,18 @@ export async function persistSession({ notify = false } = {}): Promise<void> {
   if (notify) toast.success('Session saved', { description: 'Deletions are kept across reloads.' })
 }
 
+const freshListeners = new Set<() => void>()
+
+/** Fires after a user-initiated load (open, drop, sample, merge) — never on session restore. */
+export function onFreshCapture(listener: () => void): () => void {
+  freshListeners.add(listener)
+  return () => freshListeners.delete(listener)
+}
+
+const announceFresh = () => {
+  for (const listener of freshListeners) listener()
+}
+
 /** First capture of the visit keeps filters from a shared link; later opens start clean. */
 function open(log: HarLog, fileName: string) {
   const firstCapture = store().log === null
@@ -53,43 +65,57 @@ function open(log: HarLog, fileName: string) {
   if (firstCapture) applyCriteriaFromHash()
 }
 
-export async function openFile(file: File): Promise<void> {
+async function loadFile(file: File): Promise<boolean> {
   try {
     const log = await parseWithProgress(file)
     open(log, file.name)
     await persistSession()
+    return true
   } catch (error) {
     store().setLoading(null)
     toast.error(`Couldn’t open ${file.name}`, { description: messageOf(error) })
+    return false
   }
+}
+
+export async function openFile(file: File): Promise<void> {
+  if (await loadFile(file)) announceFresh()
 }
 
 export async function openSample(): Promise<void> {
   const { createSampleLog } = await import('@/har/sample')
   open(createSampleLog(), 'sample-shop.har')
   await persistSession()
+  announceFresh()
 }
 
 /** One file opens; several are merged into a single chronological capture. */
 export async function openFiles(files: readonly File[]): Promise<void> {
   const [first, ...rest] = files
   if (!first) return
-  await openFile(first)
-  for (const file of rest) await mergeFile(file)
+  let loaded = await loadFile(first)
+  for (const file of rest) loaded = (await mergeInto(file)) || loaded
+  if (loaded) announceFresh()
 }
 
 export async function mergeFile(file: File): Promise<void> {
+  if (await mergeInto(file)) announceFresh()
+}
+
+async function mergeInto(file: File): Promise<boolean> {
   const { log, entries, fileName } = store()
-  if (!log) return openFile(file)
+  if (!log) return loadFile(file)
   try {
     const incoming = await parseWithProgress(file)
     const merged = mergeLogs([withEntries(log, entries), incoming])
     store().openCapture({ log: merged, fileName: `${baseName(fileName)} + ${file.name}` })
     await persistSession()
     toast.success(`Merged ${pluralize(incoming.entries.length, 'request')} from ${file.name}`)
+    return true
   } catch (error) {
     store().setLoading(null)
     toast.error(`Couldn’t merge ${file.name}`, { description: messageOf(error) })
+    return false
   }
 }
 

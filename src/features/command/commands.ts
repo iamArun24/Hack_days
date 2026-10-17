@@ -19,6 +19,9 @@ import {
   Regex,
   RotateCcw,
   Save,
+  Settings2,
+  Sparkles,
+  Stethoscope,
   SquareCheck,
   Sun,
   Timer,
@@ -43,7 +46,9 @@ import { copyUrls, deleteEntries } from '@/services/entry-actions'
 import { EXPORT_FORMATS, exportEntries, exportTarget } from '@/services/export'
 import { useAppStore, type AppState } from '@/store'
 import { selectSelectedEntry, selectVisibleEntries } from '@/store/selectors'
-import { VIEWS } from '../shell/views'
+import type { ViewId } from '@/store/ui-slice'
+import { focusAiFilter } from '../ai-settings/events'
+import { VIEWS, viewById } from '../shell/views'
 
 export interface Command {
   id: string
@@ -128,6 +133,39 @@ export function buildCommands(state: AppState): CommandGroup[] {
       ],
     })
   }
+
+  groups.push({
+    heading: 'AI agents',
+    commands: [
+      {
+        id: 'ai-diagnose',
+        label: 'AI: Run diagnosis',
+        icon: Stethoscope,
+        keywords: ['doctor', 'agents', 'analyze', 'root cause', 'groq'],
+        // The AI Doctor view registers the 'doctor' id.
+        run: () => store().setView('doctor' as string as ViewId),
+      },
+      {
+        id: 'ai-filter',
+        label: 'AI: Ask to filter…',
+        icon: Sparkles,
+        shortcut: [MOD, 'I'],
+        keywords: ['natural language', 'plain english', 'search', 'groq'],
+        run: () => {
+          // The AI filter lives in the filter toolbar, so make sure a filtered view is showing.
+          if (!viewById(store().view).filtered) store().setView('requests')
+          requestAnimationFrame(() => requestAnimationFrame(focusAiFilter))
+        },
+      },
+      {
+        id: 'ai-settings',
+        label: 'AI: Open settings',
+        icon: Settings2,
+        keywords: ['groq', 'api key', 'keys', 'models', 'privacy'],
+        run: () => store().openDialog({ type: 'ai-settings' }),
+      },
+    ],
+  })
 
   groups.push({
     heading: 'Filter',

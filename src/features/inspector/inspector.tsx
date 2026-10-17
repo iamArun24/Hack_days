@@ -8,6 +8,7 @@ import type { InspectorTab } from '@/har/search'
 import type { Entry } from '@/har/types'
 import { useAppStore } from '@/store'
 import { useSelectedEntry } from '@/store/selectors'
+import { ExplainPanel } from './explain-panel'
 import { FindBar } from './find-bar'
 import { InspectorHeader } from './inspector-header'
 import { inspectorTabs } from './inspector-tabs'
@@ -51,6 +52,7 @@ function InspectorPanel({ entry }: { entry: Entry }) {
   return (
     <div className="flex h-full min-h-0 flex-col bg-panel/90 backdrop-blur-xl">
       <InspectorHeader entry={entry} />
+      <ExplainPanel entry={entry} />
       <Tabs value={active} onValueChange={(v) => setTab(v as InspectorTab)}>
         <TabsList className="border-b px-4" aria-label="Request details">
           {tabs.map((t) => (

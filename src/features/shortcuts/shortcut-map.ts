@@ -14,7 +14,7 @@ export const SHORTCUT_GROUPS: readonly ShortcutGroup[] = [
       { keys: [MOD, 'O'], label: 'Open a HAR file' },
       { keys: [MOD, 'S'], label: 'Save session' },
       { keys: [MOD, 'Z'], label: 'Undo delete' },
-      { keys: ['1', '–', '7'], label: 'Switch view' },
+      { keys: ['1', '–', '0'], label: 'Switch view (1 = AI Analysis)' },
       { keys: ['?'], label: 'Show keyboard shortcuts' },
     ],
   },
